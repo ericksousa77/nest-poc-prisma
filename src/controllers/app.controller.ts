@@ -15,6 +15,8 @@ import { Post as PostModel } from '@prisma/client';
 
 import { UsersRepository } from '../repositories/users-repository';
 
+/*     UNUSED      */
+
 @Controller()
 export class AppController {
   constructor(
