@@ -1,7 +1,7 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './modules/app.module';
-import { PrismaService } from './database/prisma.service';
+import { PrismaService } from './services/database/prisma.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

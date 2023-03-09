@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, User as UserModel } from '@prisma/client';
-import { PrismaService } from 'src/database/prisma.service';
+import { PrismaService } from 'src/services/database/prisma.service';
 import { UsersRepository } from '../users-repository';
 import { randomUUID } from 'node:crypto';
 import { CreateUserBody } from 'src/dtos/user/create-user';
