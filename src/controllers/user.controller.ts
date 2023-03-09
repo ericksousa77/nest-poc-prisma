@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Query } from '@nestjs/common';
 
 import { User as UserModel } from '@prisma/client';
 import { hashSync } from 'bcrypt';
@@ -11,15 +11,20 @@ import { Public } from 'src/helpers/auth';
 export class UserController {
   constructor(private usersRepository: UsersRepository) {}
 
-  //   @Get(':id')
-  //   async getPostById(@Param('id') id: string): Promise<PostModel> {
-  //     return this.postService.post({ id: Number(id) });
-  //   }
+  @Get(':id')
+  async getPostById(@Param('id') id: string): Promise<UserModel> {
+    return this.usersRepository.findOne({ id: String(id) });
+  }
 
   @Get()
-  async index(@Request() req): Promise<UserModel[]> {
-    console.log({ user: req.user });
-    return this.usersRepository.index();
+  async index(@Query() queryParams): Promise<UserModel[]> {
+    const { page, pageSize, where, orderBy } = queryParams;
+    return this.usersRepository.index({
+      page: Number(page),
+      pageSize: Number(pageSize),
+      where,
+      orderBy: { name: 'asc' },
+    });
   }
 
   @Public()
