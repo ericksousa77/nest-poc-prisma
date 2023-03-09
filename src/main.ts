@@ -9,6 +9,8 @@ async function bootstrap() {
   //valida a partir das classes DTOS
   app.useGlobalPipes(new ValidationPipe());
 
+  app.setGlobalPrefix('api/v1');
+
   const prismaService = app.get(PrismaService);
 
   await prismaService.enableShutdownHooks(app);
