@@ -1,17 +1,17 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 
 import { Post as PostModel } from '@prisma/client';
-import { CreatePostBody } from '../dtos/create-post';
+import { CreatePostBody } from '../dtos/post/create-post';
 import { PostsRepository } from '../repositories/posts-repository';
 
 @Controller()
 export class PostController {
   constructor(private postsRepository: PostsRepository) {}
 
-  //   @Get('post/:id')
-  //   async getPostById(@Param('id') id: string): Promise<PostModel> {
-  //     return this.postService.post({ id: Number(id) });
-  //   }
+  @Get('posts/:id')
+  async getPostById(@Param('id') id: string): Promise<PostModel> {
+    return this.postsRepository.show(Number(id));
+  }
 
   @Get('posts')
   async index(): Promise<PostModel[]> {

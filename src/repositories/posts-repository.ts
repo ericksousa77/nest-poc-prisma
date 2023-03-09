@@ -1,5 +1,5 @@
 import { Post as PostModel } from '@prisma/client';
-import { CreatePostBody } from 'src/dtos/create-post';
+import { CreatePostBody } from 'src/dtos/post/create-post';
 
 // interface postCreateParams {
 //   title: string;
@@ -11,4 +11,5 @@ import { CreatePostBody } from 'src/dtos/create-post';
 export abstract class PostsRepository {
   abstract create(postData: CreatePostBody): Promise<PostModel>;
   abstract index(): Promise<PostModel[]>;
+  abstract show(id: number): Promise<PostModel>;
 }

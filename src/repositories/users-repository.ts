@@ -1,6 +1,10 @@
-import { User as UserModel } from '@prisma/client';
+import { Prisma, User as UserModel } from '@prisma/client';
+import { CreateUserBody } from 'src/dtos/user/create-user';
 
 export abstract class UsersRepository {
-  abstract create(name: string, email: string): Promise<UserModel>;
+  abstract create(userData: CreateUserBody): Promise<UserModel>;
   abstract index(): Promise<UserModel[]>;
+  abstract findOne(
+    userWhereUniqueInput: Prisma.UserWhereUniqueInput,
+  ): Promise<UserModel>;
 }

@@ -1,27 +1,36 @@
-import { ConflictException, Injectable } from '@nestjs/common';
-import { User as UserModel } from '@prisma/client';
+import { Injectable } from '@nestjs/common';
+import { Prisma, User as UserModel } from '@prisma/client';
 import { PrismaService } from 'src/database/prisma.service';
 import { UsersRepository } from '../users-repository';
 import { randomUUID } from 'node:crypto';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
+import { CreateUserBody } from 'src/dtos/user/create-user';
 
 @Injectable()
 export class PrismaUsersRepository implements UsersRepository {
   constructor(private prisma: PrismaService) {}
-  async create(name: string, email: string): Promise<UserModel> {
-    console.log('aquiiiiiiiiiiiiiii1');
+  async create(userData: CreateUserBody): Promise<UserModel> {
+    const { name, email, password } = userData;
     return this.prisma.user.create({
       data: {
         id: randomUUID(),
         name,
         email,
+        password,
       },
     });
   }
 
   async index(): Promise<UserModel[]> {
     return this.prisma.user.findMany({
-      // where: { email: { equals: 'erick.sousa3@nav9.tech' } },
+      include: { posts: true },
+    });
+  }
+
+  async findOne(
+    userWhereUniqueInput: Prisma.UserWhereUniqueInput,
+  ): Promise<UserModel | null> {
+    return this.prisma.user.findUnique({
+      where: userWhereUniqueInput,
     });
   }
 }

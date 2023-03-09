@@ -8,12 +8,12 @@ import {
   Delete,
 } from '@nestjs/common';
 
-import { UserService } from './services/user/user.service';
-import { PostService } from './services/post/post.service';
+import { UserService } from '../services/user/user.service';
+import { PostService } from '../services/post/post.service';
 
 import { Post as PostModel } from '@prisma/client';
 
-import { UsersRepository } from './repositories/users-repository';
+import { UsersRepository } from '../repositories/users-repository';
 
 @Controller()
 export class AppController {

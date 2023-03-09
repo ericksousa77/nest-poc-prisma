@@ -1,9 +1,13 @@
-import { Controller, Get, Post, Body, HttpException } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards } from '@nestjs/common';
 
 import { User as UserModel } from '@prisma/client';
-import { CreateUserBody } from '../dtos/create-user';
+import { hashSync } from 'bcrypt';
+import { CreateUserBody } from '../dtos/user/create-user';
 import { UsersRepository } from '../repositories/users-repository';
+import { AuthGuard } from '@nestjs/passport';
 
+@Controller('api')
+@UseGuards(AuthGuard('jwt'))
 @Controller()
 export class UserController {
   constructor(private usersRepository: UsersRepository) {}
@@ -20,8 +24,7 @@ export class UserController {
 
   @Post('users')
   async signupUser(@Body() userData: CreateUserBody): Promise<UserModel> {
-    const { name, email } = userData;
-
-    return this.usersRepository.create(name, email);
+    userData.password = hashSync(userData.password, 10);
+    return this.usersRepository.create(userData);
   }
 }
