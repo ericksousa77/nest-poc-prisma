@@ -1,12 +1,14 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import configuration from './config/configuration';
 import { AppModule } from './modules/app.module';
 import { PrismaService } from './services/database/prisma.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  //valida a partir das classes DTOS
+  const { port } = configuration();
+
   app.useGlobalPipes(new ValidationPipe());
 
   app.setGlobalPrefix('api/v1');
@@ -15,6 +17,6 @@ async function bootstrap() {
 
   await prismaService.enableShutdownHooks(app);
 
-  await app.listen(process.env.PORT || 3000);
+  await app.listen(port);
 }
 bootstrap();
